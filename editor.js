@@ -1,15 +1,15 @@
 document.getElementById('startButton').addEventListener('click', async () => {
     const urls = [
         'https://chlabtest.webflow.io/index.html',
-        'https://chlabtest.webflow.io/CHLab - Research.html',
-        'https://chlabtest.webflow.io/CHLab - Publications.html',
-        'https://chlabtest.webflow.io/CHLab - Outreach.html',
-        'https://chlabtest.webflow.io/CHLab - News.html',
-        'https://chlabtest.webflow.io/CHLab - Members.html',
-        'https://chlabtest.webflow.io/CHLab - Contact.html',
-        'https://chlabtest.webflow.io/Biomaterial Chemistry.html',
-        'https://chlabtest.webflow.io/Scaffold Fabrication.html',
-        'https://chlabtest.webflow.io/ECH.html'
+        'https://chlabtest.webflow.io/research.html',
+        'https://chlabtest.webflow.io/publications.html',
+        'https://chlabtest.webflow.io/outreach.html',
+        'https://chlabtest.webflow.io/news.html',
+        'https://chlabtest.webflow.io/members.html',
+        'https://chlabtest.webflow.io/contact.html',
+        'https://chlabtest.webflow.io/biomaterial-chemistry.html',
+        'https://chlabtest.webflow.io/scaffold-fabrication.html',
+        'https://chlabtest.webflow.io/ech.html'
     ];
 
     let files = await Promise.all(urls.map(url => fetch(url).then(response => response.text())));
