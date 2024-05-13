@@ -17,8 +17,8 @@ function processFiles() {
 
     for (let file of filesToProcess) {
         fileReaderPromises.push(readFileContent(file).then(content => {
-            const editedContent = editFileContent(content, file.name);
-            editedFiles.push(new File([editedContent], file.name, { type: 'text/html' }));
+            const { editedContent, newFileName } = editFileContent(content, file.name);
+            editedFiles.push(new File([editedContent], newFileName, { type: 'text/html' }));
         }));
     }
 
@@ -55,7 +55,12 @@ function editFileContent(content, fileName) {
         content = content.replace(regex, value);
     }
 
-    return content;
+    let newFileName = fileName;
+    if (fileName === 'CHLab - Home.html') {
+        newFileName = 'index.html';
+    }
+
+    return { editedContent: content, newFileName: newFileName };
 }
 
 function downloadEditedFiles(files) {
