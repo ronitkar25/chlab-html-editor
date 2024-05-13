@@ -60,6 +60,9 @@ function editFileContent(content, fileName) {
         newFileName = 'index.html';
     }
 
+    // Preserve YouTube iframes by ensuring they are not altered
+    content = content.replace(/(<iframe[^>]+src="https:\/\/www\.youtube\.com\/embed\/[^>]+><\/iframe>)/g, '$1');
+
     return { editedContent: content, newFileName: newFileName };
 }
 
