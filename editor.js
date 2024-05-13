@@ -1,5 +1,5 @@
 document.getElementById('startButton').addEventListener('click', async () => {
-    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+    const corsProxy = 'https://api.allorigins.win/get?url=';
     const urls = [
         'https://chlabtest.webflow.io/index.html',
         'https://chlabtest.webflow.io/research.html',
@@ -14,7 +14,11 @@ document.getElementById('startButton').addEventListener('click', async () => {
     ];
 
     try {
-        let files = await Promise.all(urls.map(url => fetch(corsProxy + url).then(response => response.text())));
+        let files = await Promise.all(urls.map(url => 
+            fetch(corsProxy + encodeURIComponent(url))
+            .then(response => response.json())
+            .then(data => data.contents)
+        ));
 
         const zip = new JSZip();
         const folderName = "CHLab_Edited";
