@@ -5,12 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHLab Website HTML Editor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h2 {
+            color: #333;
+        }
+        h3 {
+            color: #666;
+        }
+        .description {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #fileInput {
+            margin: 10px 0;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #downloadLink {
+            display: none;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>CHLab Website HTML Editor v6</h1>
+    <h2>CHLab Website HTML Editor</h2>
+    <h3>Version 6</h3>
+    
+    <div class="description">
+        <p>
+            Welcome to the CHLab Website HTML Editor! This tool allows you to edit multiple HTML files at once. 
+            Use the file input below to select a directory containing the HTML files you wish to process.
+            Click the "Process Files" button to apply the changes, and then download the edited files using the provided link.
+        </p>
+    </div>
+
     <input type="file" id="fileInput" webkitdirectory multiple>
     <button onclick="processFiles()">Process Files</button>
-    <a id="downloadLink" style="display:none;">Download Edited Files</a>
+    <a id="downloadLink">Download Edited Files</a>
 
     <script src="editor.js"></script>
 </body>
