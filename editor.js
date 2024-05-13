@@ -1,53 +1,72 @@
-document.getElementById('startButton').addEventListener('click', async () => {
-    const input = document.getElementById('fileInput');
-    const files = input.files;
+document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
 
-    if (files.length === 0) {
-        alert('Please select a folder containing HTML files.');
+let filesToProcess = [];
+
+function handleFileSelect(event) {
+    filesToProcess = event.target.files;
+}
+
+function processFiles() {
+    if (filesToProcess.length === 0) {
+        alert('Please select files first.');
         return;
     }
 
-    const filePromises = [];
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        filePromises.push(file.text().then(text => ({ name: file.name, content: text })));
+    const editedFiles = [];
+    const fileReaderPromises = [];
+
+    for (let file of filesToProcess) {
+        fileReaderPromises.push(readFileContent(file).then(content => {
+            const editedContent = editFileContent(content, file.name);
+            editedFiles.push(new File([editedContent], file.name, { type: 'text/html' }));
+        }));
     }
 
-    const filesData = await Promise.all(filePromises);
-
-    const zip = new JSZip();
-    const folderName = "CHLab_Edited";
-
-    filesData.forEach(file => {
-        let text = file.content;
-        text = text.replace(/href="\//g, 'href="');
-        text = text.replace(/href="\/research"/g, 'href="CHLab - Research.html"');
-        text = text.replace(/href="\/publications"/g, 'href="CHLab - Publications.html"');
-        text = text.replace(/href="\/news"/g, 'href="CHLab - News.html"');
-        text = text.replace(/href="\/outreach"/g, 'href="CHLab - Outreach.html"');
-        text = text.replace(/href="\/members"/g, 'href="CHLab - Members.html"');
-        text = text.replace(/href="\/contact"/g, 'href="CHLab - Contact.html"');
-        text = text.replace(/href="\/biomaterial-chemistry"/g, 'href="Biomaterial Chemistry.html"');
-        text = text.replace(/href="\/scaffold-fabrication"/g, 'href="Scaffold Fabrication.html"');
-        text = text.replace(/href="\/ech"/g, 'href="ECH.html"');
-
-        let fileName = file.name;
-        if (fileName === 'index.html') {
-            fileName = 'CHLab - Home.html';
-        }
-
-        zip.folder(folderName).file(fileName, text);
+    Promise.all(fileReaderPromises).then(() => {
+        downloadEditedFiles(editedFiles);
     });
+}
 
-    zip.generateAsync({ type: "blob" })
-        .then(function (content) {
-            const downloadLink = document.getElementById('downloadLink');
-            downloadLink.href = URL.createObjectURL(content);
-            downloadLink.download = `${folderName}.zip`;
-            downloadLink.style.display = 'block';
-            downloadLink.click();
-        })
-        .catch(error => {
-            console.error('Error generating zip file:', error);
-        });
-});
+function readFileContent(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = event => resolve(event.target.result);
+        reader.onerror = error => reject(error);
+        reader.readAsText(file);
+    });
+}
+
+function editFileContent(content, fileName) {
+    const replacements = {
+        'href="/"': 'href="index.html"',
+        'href="/research"': 'href="CHLab - Research.html"',
+        'href="/publications"': 'href="CHLab - Publications.html"',
+        'href="/news"': 'href="CHLab - News.html"',
+        'href="/outreach"': 'href="CHLab - Outreach.html"',
+        'href="/members"': 'href="CHLab - Members.html"',
+        'href="/contact"': 'href="CHLab - Contact.html"',
+        'href="/biomaterial-chemistry"': 'href="Biomaterial Chemistry.html"',
+        'href="/scaffold-fabrication"': 'href="Scaffold Fabrication.html"',
+        'href="/ech"': 'href="ECH.html"'
+    };
+
+    for (let [key, value] of Object.entries(replacements)) {
+        const regex = new RegExp(key, 'g');
+        content = content.replace(regex, value);
+    }
+
+    return content;
+}
+
+function downloadEditedFiles(files) {
+    const zip = new JSZip();
+    files.forEach(file => zip.file(file.name, file));
+
+    zip.generateAsync({ type: 'blob' }).then(content => {
+        const link = document.getElementById('downloadLink');
+        link.href = URL.createObjectURL(content);
+        link.download = 'edited_files.zip';
+        link.style.display = 'block';
+        link.innerText = 'Download Edited Files';
+    });
+}
