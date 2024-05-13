@@ -55,13 +55,13 @@ function editFileContent(content, fileName) {
         content = content.replace(regex, value);
     }
 
+    // Add protocol to iframe src attributes if missing
+    content = content.replace(/src="\/\/cdn\.embedly\.com\/widgets\/media\.html/g, 'src="https://cdn.embedly.com/widgets/media.html');
+
     let newFileName = fileName;
     if (fileName === 'CHLab - Home.html') {
         newFileName = 'index.html';
     }
-
-    // Preserve YouTube iframes by ensuring they are not altered
-    content = content.replace(/(<iframe[^>]+src="https:\/\/www\.youtube\.com\/embed\/[^>]+><\/iframe>)/g, '$1');
 
     return { editedContent: content, newFileName: newFileName };
 }
