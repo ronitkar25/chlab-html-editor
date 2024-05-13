@@ -21,17 +21,22 @@ document.getElementById('startButton').addEventListener('click', async () => {
     filesData.forEach(file => {
         let text = file.content;
         text = text.replace(/href="\//g, 'href="');
-        text = text.replace(/href="\/research"/g, 'href="research.html"');
-        text = text.replace(/href="\/publications"/g, 'href="publications.html"');
-        text = text.replace(/href="\/news"/g, 'href="news.html"');
-        text = text.replace(/href="\/outreach"/g, 'href="outreach.html"');
-        text = text.replace(/href="\/members"/g, 'href="members.html"');
-        text = text.replace(/href="\/contact"/g, 'href="contact.html"');
-        text = text.replace(/href="\/biomaterial-chemistry"/g, 'href="biomaterial-chemistry.html"');
-        text = text.replace(/href="\/scaffold-fabrication"/g, 'href="scaffold-fabrication.html"');
-        text = text.replace(/href="\/ech"/g, 'href="ech.html"');
+        text = text.replace(/href="\/research"/g, 'href="CHLab - Research.html"');
+        text = text.replace(/href="\/publications"/g, 'href="CHLab - Publications.html"');
+        text = text.replace(/href="\/news"/g, 'href="CHLab - News.html"');
+        text = text.replace(/href="\/outreach"/g, 'href="CHLab - Outreach.html"');
+        text = text.replace(/href="\/members"/g, 'href="CHLab - Members.html"');
+        text = text.replace(/href="\/contact"/g, 'href="CHLab - Contact.html"');
+        text = text.replace(/href="\/biomaterial-chemistry"/g, 'href="Biomaterial Chemistry.html"');
+        text = text.replace(/href="\/scaffold-fabrication"/g, 'href="Scaffold Fabrication.html"');
+        text = text.replace(/href="\/ech"/g, 'href="ECH.html"');
 
-        zip.folder(folderName).file(file.name, text);
+        let fileName = file.name;
+        if (fileName === 'index.html') {
+            fileName = 'CHLab - Home.html';
+        }
+
+        zip.folder(folderName).file(fileName, text);
     });
 
     zip.generateAsync({ type: "blob" })
