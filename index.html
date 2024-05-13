@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHLab HTML Editor</title>
+    <title>CHLab Website HTML Editor</title>
 </head>
 <body>
-    <h1>CHLab HTML Editor</h1>
-    <input type="file" id="fileInput" webkitdirectory directory multiple />
-    <button id="startButton">Process and Download Edited HTML Files</button>
-    <a id="downloadLink" style="display:none">Download Edited Files</a>
+    <h1>CHLab Website HTML Editor v1</h1>
+    <input type="file" id="fileInput" multiple>
+    <button onclick="processFiles()">Process Files</button>
+    <a id="downloadLink" style="display:none;">Download Edited Files</a>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="editor.js"></script>
 </body>
 </html>
